@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho de Compras - TSN OmniTech & Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-950 text-gray-100 font-sans antialiased min-h-screen flex flex-col justify-between">
+
+    <!-- Cabeçalho Simples -->
+    <header class="bg-gray-900 border-b border-gray-800 py-4 px-6 flex justify-between items-center">
+        <a href="{% url 'carrinho' %}" class="relative bg-gray-800 hover:bg-gray-700 p-2.5 rounded-xl text-gray-200 transition shadow" title="Carrinho">
+            <i class="fa-solid fa-cart-shopping"></i>
+            {% if request.user.is_authenticated %}
+                <!-- Pode exibir um indicador se desejar -->
+            {% endif %}
+        </a>
+        <a href="{% url 'adicionar_ao_carrinho' produto.id %}" class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-3.5 py-2.5 rounded-xl font-medium transition shadow-md flex items-center gap-1.5">
+            <i class="fa-solid fa-cart-plus"></i> Comprar
+        </a>
+    </header>
+
+    <!-- Conteúdo do Carrinho -->
+    <main class="container mx-auto px-4 py-10 flex-grow max-w-4xl">
+        <h2 class="text-2xl sm:text-3xl font-bold mb-6 flex items-center gap-3">
+            <i class="fa-solid fa-cart-shopping text-blue-500"></i> O seu Carrinho de Compras
+        </h2>
+
+        {% if pedido and pedido.itens.all %}
+            <div class="bg-gray-900 border border-gray-800 rounded-2xl shadow-xl overflow-hidden mb-8">
+                <div class="divide-y divide-gray-800">
+                    {% for item in pedido.itens.all %}
+                        <div class="p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                            <div>
+                                <h4 class="text-lg font-bold text-white">{{ item.produto.nome }}</h4>
+                                <p class="text-xs text-gray-400">Preço Unitário: {{ item.preco_unitario }} Kz</p>
+                            </div>
+                            <div class="flex items-center gap-6">
+                                <span class="text-sm bg-gray-800 px-3 py-1.5 rounded-lg border border-gray-700">
+                                    Qtd: <b>{{ item.quantidade }}</b>
+                                </span>
+                                <span class="text-base font-black text-emerald-400">
+                                    {% widthratio item.quantidade 1 item.preco_unitario %} Kz
+                                </span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="bg-gray-900/80 p-6 border-t border-gray-800 flex justify-between items-center">
+                    <span class="text-lg font-medium text-gray-300">Total Geral:</span>
+                    <span class="text-2xl font-black text-emerald-400">{{ pedido.total }} Kz</span>
+                </div>
+            </div>
+
+            <div class="flex justify-end">
+                <a href="{% url 'finalizar_compra' %}" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-8 py-3.5 rounded-xl transition shadow-lg shadow-emerald-950/50 flex items-center gap-2">
+                    <i class="fa-solid fa-check"></i> Finalizar Encomenda
+                </a>
+            </div>
+        {% else %}
+            <div class="text-center py-20 bg-gray-900 rounded-2xl border border-gray-800">
+                <i class="fa-solid fa-cart-arrow-down text-5xl text-gray-600 mb-4"></i>
+                <p class="text-gray-300 text-lg font-medium">O seu carrinho está vazio.</p>
+                <a href="{% url 'home' %}" class="inline-block mt-4 bg-blue-600 hover:bg-blue-500 text-white px-6 py-2.5 rounded-xl text-sm font-medium transition">
+                    Explorar Produtos
+                </a>
+            </div>
+        {% endif %}
+    </main>
+
+    <footer class="bg-gray-900 border-t border-gray-800 py-6 text-center text-gray-500 text-sm">
+        &copy; 2026 TSN OmniTech & Store. Todos os direitos reservados.
+    </footer>
+</body>
+</html>

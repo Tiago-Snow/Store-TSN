@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ produto.nome }} - TSN OmniTech & Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="bg-gray-950 text-gray-100 font-sans antialiased min-h-screen flex flex-col justify-between">
+
+    <!-- Cabeçalho -->
+    <header class="bg-gray-900 border-b border-gray-800 py-4 px-6 flex justify-between items-center">
+        <a href="{% url 'home' %}"
+            class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">
+            TSN <span class="text-white font-light">OmniTech</span>
+        </a>
+        <a href="{% url 'home' %}" class="text-sm text-gray-400 hover:text-white transition flex items-center gap-1.5">
+            <i class="fa-solid fa-arrow-left"></i> Voltar à Loja
+        </a>
+    </header>
+
+    <!-- Conteúdo do Produto -->
+    <main class="container mx-auto px-4 py-12 flex-grow max-w-4xl">
+        <div
+            class="bg-gray-900 border border-gray-800 rounded-3xl p-6 sm:p-10 shadow-2xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+
+            <!-- Bloco Visual / Ícone de Destaque -->
+            <div
+                class="bg-gray-950 border border-blue-900/40 rounded-2xl overflow-hidden flex items-center justify-center h-72">
+                {% if produto.imagem %}
+                <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}" class="w-full h-full object-cover">
+                {% else %}
+                <div class="text-gray-600 flex flex-col items-center justify-center">
+                    <i class="fa-solid fa-image text-5xl mb-2"></i>
+                    <span class="text-xs">Sem imagem disponível</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Informações Detalhadas -->
+            <div>
+                <h4 class="text-lg font-bold text-white mb-2 group-hover:text-blue-400 transition">
+                    <a href="{% url 'detalhe_produto' produto.id %}">{{ produto.nome }}</a>
+                </h4>
+                <div class="text-3xl font-black text-emerald-400 mb-6">{{ produto.preco }} Kz</div>
+
+                <p class="text-gray-300 text-sm leading-relaxed mb-6">
+                    {{ produto.descricao }}
+                </p>
+
+                <div class="flex items-center gap-3 mb-8 text-sm">
+                    <span class="text-gray-400">Disponibilidade em Stock:</span>
+                    <span
+                        class="bg-emerald-950/60 text-emerald-400 border border-emerald-800 px-3 py-1 rounded-lg font-bold">
+                        {{ produto.stock }} unidades
+                    </span>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <a href="{% url 'adicionar_ao_carrinho' produto.id %}"
+                        class="flex-grow bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 px-6 rounded-xl transition shadow-lg shadow-blue-900/40 flex items-center justify-center gap-2 text-sm">
+                        <i class="fa-solid fa-cart-plus"></i> Adicionar ao Carrinho
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-6 text-center text-gray-500 text-sm">
+        &copy; 2026 TSN OmniTech & Store. Todos os direitos reservados.
+    </footer>
+</body>
+
+</html>
